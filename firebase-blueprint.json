@@ -1,0 +1,104 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and wallet data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "username": { "type": "string" },
+        "email": { "type": "string" },
+        "balance": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "avatarUrl": { "type": "string" },
+        "totalMatches": { "type": "number" },
+        "totalWins": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "username", "email", "balance", "role"]
+    },
+    "Match": {
+      "title": "Match",
+      "description": "Tournament match details",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["BR MATCH", "CLASH SQUAD", "LONE WOLF", "CS 1V1", "CS 2V2", "LUDO MATCH", "FREE MATCH"] },
+        "entryFee": { "type": "number" },
+        "prize": { "type": "number" },
+        "status": { "type": "string", "enum": ["upcoming", "live", "completed"] },
+        "startTime": { "type": "string", "format": "date-time" },
+        "maxSlots": { "type": "number" },
+        "currentSlots": { "type": "number" },
+        "joinedPlayers": { "type": "array", "description": "List of user UIDs" },
+        "roomDetails": { 
+          "type": "object",
+          "properties": {
+            "roomId": { "type": "string" },
+            "password": { "type": "string" }
+          }
+        },
+        "rules": { "type": "string" },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["title", "type", "entryFee", "prize", "status", "startTime", "maxSlots"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Wallet deposit and withdrawal requests",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["deposit", "withdraw"] },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "paymentMethod": { "type": "string", "enum": ["bKash", "Nagad", "Rocket"] },
+        "accountNumber": { "type": "string" },
+        "transactionId": { "type": "string" },
+        "proofImageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "type", "amount", "status", "paymentMethod"]
+    },
+    "Result": {
+      "title": "Result",
+      "description": "Match outcomes and leaderboards",
+      "type": "object",
+      "properties": {
+        "matchId": { "type": "string" },
+        "winners": { 
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uid": { "type": "string" },
+              "rank": { "type": "number" },
+              "kills": { "type": "number" },
+              "prize": { "type": "number" }
+            }
+          }
+        },
+        "publishedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["matchId", "winners"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/matches/{matchId}": {
+      "schema": "Match",
+      "description": "Tournament matches"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Financial transaction history"
+    },
+    "/results/{resultId}": {
+      "schema": "Result",
+      "description": "Tournament results"
+    }
+  }
+}

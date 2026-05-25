@@ -1,0 +1,6 @@
+{
+  "name": "amar Tournament",
+  "description": "A professional gaming tournament platform with a secure wallet system, real-time match brackets, results, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
